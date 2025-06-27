@@ -3,6 +3,8 @@ module hummus.cfg;
 import std.traits : Fields, FieldNameTuple;
 import niknaks.meta : isStructType;
 
+import gogga.mixins;
+
 private void go(ft, string fn)()
 {
     pragma(msg, "Processing entry '", fn, "' with type '", ft, "'");
@@ -16,14 +18,30 @@ private void go(ft, string fn)()
 // todo: rename, provider
 public interface Provider
 {
-    // todo: rename, get
-    public string provide(string name);
+    import std.string : format;
+    import std.stdio : writeln;
 
-    // public final void sink(T)(string name)
-    // {
-    // import std.conv : to;
-    // sink(name, to!(string)(value));
-    // }
+    // todo: rename, get
+    protected string provideImpl(string name);
+
+    /**
+     * Provides us the value that maps
+     * to the given name
+     *
+     * Params:
+     *   name = the name of the value
+     * to lookup
+     * Returns: the value
+     */
+    public final string provide(string name)
+    {
+        DEBUG(format("Looking up configuration entry for '%s'...", name));
+
+        string v = provideImpl(name);
+        INFO(format("Mapped name '%s' to value '%s'", name, v));
+
+        return v;
+    }
 }
 
 private void sinkStruct() // todo: struct check
@@ -88,7 +106,7 @@ version (unittest)
 
     class DummySink : Provider
     {
-        public string provide(string n)
+        public string provideImpl(string n)
         {
             // writeln("name: ", n);
             return format("valFor: %s", n);
