@@ -13,9 +13,11 @@ private void go(ft, string fn)()
 	// }
 }
 
+// todo: rename, provider
 public interface Sink
 {
-	public void sink(string name);
+	// todo: rename, get
+	public string sink(string name);
 
 	// public final void sink(T)(string name)
 	// {
@@ -50,9 +52,10 @@ if(isStructType!(T)())
 	// Loop through each pair and process
 	static foreach(c; 0..fn_s.length)
 	{
-		sk.sink(fn_s[c]);
+		writeln(sk.sink(fn_s[c]));
 		_fs ~= fn_s[c];
-		go!(ft_s[c], fn_s[c]);
+
+		// go!(ft_s[c], fn_s[c]);
 
 		// if the current member's type is
 		// a struct-type
@@ -61,16 +64,13 @@ if(isStructType!(T)())
 		{
 			pragma(msg, "The '", fn_s[c], "' is a struct type");
 			// pragma(msg, fn_s[c]~"."~__traits(identifier, __traits(getMember, s, fn_s[c])));
-			sk.sink(fn_s[c]~"."~__traits(identifier, __traits(getMember, s, fn_s[c])));
+			// sk.sink(fn_s[c]~"."~__traits(identifier, __traits(getMember, s, fn_s[c])));
 
-			// static foreach(c; 0..FieldNameTuple!(typeof(__traits(getMember, s, fn_s[c]))).length)
-			// {
-				// fieldsOf(__traits(getMember, s, fn_s[c]), sk);
-			// }
-
+			// recurse on each struct member
 			foreach(fn_inner; fieldsOf(__traits(getMember, s, fn_s[c]), sk))
 			{
-				_fs ~= fn_s[c]~"."~fn_inner;	
+				_fs ~= fn_s[c]~"."~fn_inner;
+				writeln("Provided: ", sk.sink(fn_s[c]~"."~fn_inner)); // todo: access here for saving
 			}
 		}
 	}
@@ -89,9 +89,10 @@ version(unittest)
 	import std.string : format;
 	class DummySink : Sink
 	{
-		public void sink(string n)
+		public string sink(string n)
 		{
-			writeln("name: ", n);
+			// writeln("name: ", n);
+			return format("valFor: %s",n);
 		}
 	}
 }
