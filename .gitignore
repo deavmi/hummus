@@ -1,0 +1,16 @@
+.dub
+docs.json
+__dummy.html
+docs/
+/hummus
+hummus.so
+hummus.dylib
+hummus.dll
+hummus.a
+hummus.lib
+hummus-test-*
+*.exe
+*.pdb
+*.o
+*.obj
+*.lst
