@@ -5,6 +5,8 @@ import niknaks.meta : isStructType;
 
 import gogga.mixins;
 
+import niknaks.functional : Optional;
+
 /**
  * Describes a provider of
  * values which, when requested
@@ -17,7 +19,7 @@ public interface Provider
     import std.stdio : writeln;
 
     // todo: rename, get
-    protected string provideImpl(string name);
+    protected bool provideImpl(ref string name);
 
     /**
      * Provides us the value that maps
@@ -26,16 +28,22 @@ public interface Provider
      * Params:
      *   name = the name of the value
      * to lookup
-     * Returns: the value
+     * Returns: an `Optional` containing
+     * the value (if a mapping exists)
      */
-    public final string provide(string name)
+    public final Optional!(string) provide(string name)
     {
         DEBUG(format("Looking up configuration entry for '%s'...", name));
 
-        string v = provideImpl(name);
-        INFO(format("Mapped name '%s' to value '%s'", name, v));
+        string _v;
+        if(!provideImpl(_v))
+        {
+            ERROR(format("No value mapping for '%s'", name));
+            return Optional!(string).empty();
+        }
 
-        return v;
+        INFO(format("Mapped name '%s' to value '%s'", name, _v));
+        return Optional!(string)(_v);
     }
 }
 
@@ -94,10 +102,11 @@ version (unittest)
 
     class DummySink : Provider
     {
-        public string provideImpl(string n)
+        public bool provideImpl(ref string n)
         {
             // writeln("name: ", n);
-            return format("valFor: %s", n);
+            n = format("valFor: %s", n);
+            return true;
         }
     }
 }
