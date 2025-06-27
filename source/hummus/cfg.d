@@ -109,7 +109,6 @@ version (unittest)
                 return false;
             }
 
-            // writeln("name: ", n);
             v = format("v:%s", n);
             return true;
         }
