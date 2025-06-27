@@ -19,7 +19,7 @@ public interface Provider
     import std.stdio : writeln;
 
     // todo: rename, get
-    protected bool provideImpl(ref string name);
+    protected bool provideImpl(string n, ref string v_out);
 
     /**
      * Provides us the value that maps
@@ -36,7 +36,7 @@ public interface Provider
         DEBUG(format("Looking up configuration entry for '%s'...", name));
 
         string _v;
-        if(!provideImpl(_v))
+        if(!provideImpl(name, _v))
         {
             ERROR(format("No value mapping for '%s'", name));
             return Optional!(string).empty();
@@ -102,10 +102,15 @@ version (unittest)
 
     class DummySink : Provider
     {
-        public bool provideImpl(ref string n)
+        public bool provideImpl(string n, ref string v)
         {
+            if(n == "porto")
+            {
+                return false;
+            }
+
             // writeln("name: ", n);
-            n = format("valFor: %s", n);
+            v = format("v:%s", n);
             return true;
         }
     }
