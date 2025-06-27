@@ -5,17 +5,12 @@ import niknaks.meta : isStructType;
 
 import gogga.mixins;
 
-private void go(ft, string fn)()
-{
-    pragma(msg, "Processing entry '", fn, "' with type '", ft, "'");
-
-    // static if(isStructType!(ft))
-    // {
-    // fieldsOf(ft);
-    // }
-}
-
-// todo: rename, provider
+/**
+ * Describes a provider of
+ * values which, when requested
+ * by a name will yield the
+ * corresponding value
+ */
 public interface Provider
 {
     import std.string : format;
@@ -44,11 +39,6 @@ public interface Provider
     }
 }
 
-private void sinkStruct() // todo: struct check
-{
-
-}
-
 //
 // this will discover everything in
 // the struct and then it needs to
@@ -70,8 +60,6 @@ if (isStructType!(T)())
     {
         writeln(p.provide(fn_s[c]));
         _fs ~= fn_s[c];
-
-        // go!(ft_s[c], fn_s[c]);
 
         // if the current member's type is
         // a struct-type
