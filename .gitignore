@@ -17,3 +17,6 @@ hummus-test-*
 
 # Dub package management
 dub.selections.json
+
+# Library build files
+libhummus.a
