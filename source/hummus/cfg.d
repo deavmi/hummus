@@ -47,13 +47,22 @@ public interface Provider
     }
 }
 
+private string generateName(string n, string rootVal)
+{
+    if(rootVal.length)
+    {
+        return rootVal~"."~n;
+    }
+    return n;
+}
+
 //
 // this will discover everything in
 // the struct and then it needs to
 // sink it into some sort of interface
 // that implements this
 //
-private string[] fieldsOf(T)(T s, Provider p) // todo: niknaks - is-struct check
+private string[] fieldsOf(T)(T s, Provider p, string r) // todo: niknaks - is-struct check
 if (isStructType!(T)())
 {
     string[] _fs;
@@ -62,6 +71,12 @@ if (isStructType!(T)())
     alias ft_s = Fields!(T);
     alias fn_s = FieldNameTuple!(T);
 
+    writeln("Struct on entry: ", s);
+    scope(exit)
+    {
+        writeln("Struct on exit: ", s);
+    }
+    
     writeln("Fields of struct: '", __traits(identifier, T), "'");
     scope(exit)
     {
@@ -74,12 +89,10 @@ if (isStructType!(T)())
         writeln("Exmine member '", fn_s[c], "'");
 
         // assignment would look like below
-        __traits(getMember, s, fn_s[c]) = __traits(getMember, s, fn_s[c]);
+        // __traits(getMember, s, fn_s[c]) = __traits(getMember, s, fn_s[c]);
         writeln("Exmine member '", __traits(getMember, s, fn_s[c]), "'");
         
         
-        // writeln(p.provide(fn_s[c]));
-        p.provide(fn_s[c]);
         _fs ~= fn_s[c];
 
         // if the current member's type is
@@ -93,13 +106,13 @@ if (isStructType!(T)())
             // sk.sink(fn_s[c]~"."~__traits(identifier, __traits(getMember, s, fn_s[c])));
 
             // recurse on each struct member
-            foreach (fn_inner; fieldsOf(__traits(getMember, s, fn_s[c]), p))
+            foreach (fn_inner; fieldsOf(__traits(getMember, s, fn_s[c]), p, generateName(fn_s[c], r)))
             {
                 _fs ~= fn_s[c] ~ "." ~ fn_inner;
 
                 // mixin("s."~fn_s[c]) = ;
 
-				p.provide(fn_s[c] ~ "." ~ fn_inner);
+				// p.provide(fn_s[c] ~ "." ~ fn_inner);
                 // writeln("Provided: ", p.provide(fn_s[c] ~ "." ~ fn_inner)); // todo: access here for saving
             }
         }
@@ -113,7 +126,26 @@ if (isStructType!(T)())
         {
         	pragma(msg, "The '", fn_s[c], "' is a primitive type");
 
-        	// todo: continue here
+        	// ask provider for value, if it has one, then
+            // attempt to assign it
+            // auto opt = p.provide(fn_s[c]);
+            // if(opt) fixme: make that work
+            // todo: find a way to make temp vars
+            // if(p.provide(fn_s[c]).isPresent())
+            if(p.provide(generateName(fn_s[c], r)).isPresent())
+            {
+                // todo: catch failing to!(T)(V) call exception
+                import std.conv : to;
+                DEBUG(format("Trying to convert '%s'", p.provide(generateName(fn_s[c], r)).get()));
+                __traits(getMember, s, fn_s[c]) = to!
+                (
+                    typeof(__traits(getMember, s, fn_s[c]))
+                )
+                (
+                    p.provide(generateName(fn_s[c], r)).get()
+                );
+            }
+            
         }
     }
 
@@ -132,12 +164,32 @@ version (unittest)
 
     class DummySink : Provider
     {
+        string[] _s;
         public bool provideImpl(string n, ref string v)
         {
-            if(n == "porto")
+            _s ~= n;
+            if(n == "adress")
             {
                 return false;
             }
+            else if(n == "porto")
+            {
+                v = "443";
+                return true;
+            }
+            else if(n == "s.x")
+            {
+                v = "10";
+                return true;
+            }
+            else if(n == "s.y")
+            {
+                v = "-10";
+                return true;
+            }
+            // todo: disable below for conv error as it gets
+            // the value below whioch fails to convert
+            // else if
 
             v = format("v:%s", n);
             return true;
@@ -149,7 +201,7 @@ unittest
 {
     struct X
     {
-        private int p;
+        private string p;
     }
 
     struct A
@@ -169,6 +221,11 @@ unittest
     auto mc = MinhaConfiguracao();
 
     auto ds = new DummySink();
-    auto s = fieldsOf(mc, ds);
+    auto s = fieldsOf(mc, ds, "");
     writeln(s);
+    
+    writeln("Provider had requests for: ", ds._s);
+    
+    
+    writeln(mc);
 }
