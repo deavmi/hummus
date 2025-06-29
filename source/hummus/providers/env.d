@@ -1,23 +1,44 @@
-module hummus.env;
+module hummus.provides.env;
 
-import hummus.cfg : Provider;
+import hummus.provider : Provider;
 import std.process : environment;
 
 /** 
  * A provider which will look for
  * environment variables based
  * on a _transformed_ version of
- * their name. This transformation
- * replaces all `.` with two underscores -
- * `__`.
+ * their name.
+ * 
+ * This transformation replaces all
+ * `.` with a character of your
+ * choice (default is `__`) and
+ * also ensures all parts of the
+ * name are upper-case.
  */
 public class EnvironmentProvider : Provider
 {
+	private string _dp;
+	
+	this(string dotReplace)
+	{
+		this._dp = dotReplace;	
+	}
+
+	this()
+	{
+		this("__");
+	}
+
     // todo: can '.''s work - I think so?
     protected bool provideImpl(string n, ref string v)
     {
+		// upper-case everything
+		import std.string : toUpper;
+		auto trans_n = toUpper(n);
+
+    	// replace `.` with `_dp`
         import std.string : replace;
-        auto trans_n = replace(n, ".", "__");
+        trans_n = replace(trans_n, ".", this._dp);
         
         // todo: switch to nothrow version
         try
@@ -35,13 +56,20 @@ public class EnvironmentProvider : Provider
 private version(unittest)
 {
     import hummus.cfg : fieldsOf;
+    import std.stdio : writeln;
 }
 
 unittest
 {
+	writeln();
+	scope(exit)
+	{
+		writeln();
+	}
+	
     struct Inner
     {
-        string z;
+        int z;
     }
     
     struct Cfg
@@ -51,7 +79,13 @@ unittest
     }
     
     auto cfg = Cfg();
+    writeln("Before provisioning: ", cfg);
     
     // envvars `v` and `i.z` should be present
     fieldsOf(cfg, new EnvironmentProvider());
+
+	writeln("After provisioning: ", cfg);
+
+    assert(cfg.v == "1");
+    assert(cfg.i.z == 2);
 }

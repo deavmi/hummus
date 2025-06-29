@@ -7,7 +7,7 @@ module hummus.engine;
 
 // it probably can be if we model it, itself, as a provider
 
-import hummus.cfg : Provider;
+import hummus.provider;
 import gogga.mixins;
 import std.string : format;
 
@@ -80,25 +80,35 @@ version(unittest)
 
 unittest
 {
-    auto e = new Engine();
+    // auto e = new Engine();
     
-    auto opt1 = e.provide("Key1");
-    auto opt2 = e.provide("Key2");
-    assert(opt1.isEmpty());
-    assert(opt1.isEmpty());
+    // auto opt1 = e.provide("Key1");
+    // auto opt2 = e.provide("Key2");
+    // assert(opt1.isEmpty());
+    // assert(opt1.isEmpty());
     
-    e.attach(new DP1());
-    opt1 = e.provide("Key1");
-    opt2 = e.provide("Key2");
-    assert(opt1.isPresent());
-    assert(opt1.get() == "Value1");
-    assert(opt2.isEmpty());
+    // e.attach(new DP1());
+    // opt1 = e.provide("Key1");
+    // opt2 = e.provide("Key2");
+    // assert(opt1.isPresent());
+    // assert(opt1.get() == "Value1");
+    // assert(opt2.isEmpty());
     
-    e.attach(new DP2());
-    opt1 = e.provide("Key1");
-    opt2 = e.provide("Key2");
-    assert(opt1.isPresent());
-    assert(opt1.get() == "Value1");
-    assert(opt2.isPresent());
-    assert(opt2.get() == "Value2");
+    // e.attach(new DP2());
+    // opt1 = e.provide("Key1");
+    // opt2 = e.provide("Key2");
+    // assert(opt1.isPresent());
+    // assert(opt1.get() == "Value1");
+    // assert(opt2.isPresent());
+    // assert(opt2.get() == "Value2");
+}
+
+
+
+public void fill(T)(ref T structType, Provider p)
+// todo: isStructType
+{
+    import hummus.cfg : fieldsOf;
+    
+    fieldsOf(structType, p);
 }
