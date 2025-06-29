@@ -57,10 +57,19 @@ private string generateName(string n, string rootVal)
 }
 
 //
-// this will discover everything in
-// the struct and then it needs to
-// sink it into some sort of interface
-// that implements this
+// this is a compile-time recursive
+// function that wil generate multiple
+// versions of itself in order to discover
+// the full structure of the struct
+// type `T`.
+// 
+// The struct will be updated via `ref`
+// (via reference) and values will be
+// assigned to it via the provider `p`.
+// 
+// In order for naming to be hierachial
+// a rot value is passed along as an
+// auxillary piece of data
 //
 private string[] fieldsOf(T)(ref T s, Provider p, string r) // todo: niknaks - is-struct check
 if (isStructType!(T)())
