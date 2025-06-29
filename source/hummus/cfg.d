@@ -59,18 +59,19 @@ if (isStructType!(T)())
     string[] _fs;
 
     // compile time gen: assignment lines
-
     alias ft_s = Fields!(T);
     alias fn_s = FieldNameTuple!(T);
 
     // Loop through each pair and process
     static foreach (c; 0 .. fn_s.length)
     {
-        writeln(p.provide(fn_s[c]));
+        // writeln(p.provide(fn_s[c]));
+        p.provide(fn_s[c]);
         _fs ~= fn_s[c];
 
         // if the current member's type is
         // a struct-type
+        // todo: try use below
         // mixin("alias _mem",c) = T;
         static if (isStructType!(typeof(__traits(getMember, s, fn_s[c]))))
         {
@@ -82,7 +83,11 @@ if (isStructType!(T)())
             foreach (fn_inner; fieldsOf(__traits(getMember, s, fn_s[c]), p))
             {
                 _fs ~= fn_s[c] ~ "." ~ fn_inner;
-                writeln("Provided: ", p.provide(fn_s[c] ~ "." ~ fn_inner)); // todo: access here for saving
+
+                // mixin("s."~fn_s[c]) = ;
+
+				p.provide(fn_s[c] ~ "." ~ fn_inner);
+                // writeln("Provided: ", p.provide(fn_s[c] ~ "." ~ fn_inner)); // todo: access here for saving
             }
         }
     }
@@ -133,7 +138,7 @@ unittest
         private string adres;
         private size_t porto;
         private A s;
-        private A si;
+        // private A si;
     }
 
     auto mc = MinhaConfiguracao();
