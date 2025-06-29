@@ -62,6 +62,12 @@ if (isStructType!(T)())
     alias ft_s = Fields!(T);
     alias fn_s = FieldNameTuple!(T);
 
+    writeln("Fields of struct: '", __traits(identifier, T), "'");
+    scope(exit)
+    {
+        writeln("Processed '", __traits(identifier, T), "'");
+    }
+    
     // Loop through each pair and process
     static foreach (c; 0 .. fn_s.length)
     {
@@ -99,6 +105,8 @@ if (isStructType!(T)())
         else
         {
         	pragma(msg, "The '", fn_s[c], "' is a primitive type");
+
+        	// todo: continue here
         }
     }
 
