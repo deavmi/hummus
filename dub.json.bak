@@ -11,4 +11,5 @@
 	"license": "LGPL-2.0-only",
 	"name": "hummus",
 	"targetType": "library",
+	"versions": ["DBG_DEBUG_LOGGING", "DBG_VERBOSE_LOGGING"]
 }
