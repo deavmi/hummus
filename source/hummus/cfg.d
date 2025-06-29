@@ -71,6 +71,13 @@ if (isStructType!(T)())
     // Loop through each pair and process
     static foreach (c; 0 .. fn_s.length)
     {
+        writeln("Exmine member '", fn_s[c], "'");
+
+        // assignment would look like below
+        __traits(getMember, s, fn_s[c]) = __traits(getMember, s, fn_s[c]);
+        writeln("Exmine member '", __traits(getMember, s, fn_s[c]), "'");
+        
+        
         // writeln(p.provide(fn_s[c]));
         p.provide(fn_s[c]);
         _fs ~= fn_s[c];
