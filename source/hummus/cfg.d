@@ -71,11 +71,9 @@ private string generateName(string n, string rootVal)
 // a rot value is passed along as an
 // auxillary piece of data
 //
-private string[] fieldsOf(T)(ref T s, Provider p, string r) // todo: niknaks - is-struct check
+private void fieldsOf(T)(ref T s, Provider p, string r) // todo: niknaks - is-struct check
 if (isStructType!(T)())
 {
-    string[] _fs;
-
     // compile time gen: assignment lines
     alias ft_s = Fields!(T);
     alias fn_s = FieldNameTuple!(T);
@@ -101,8 +99,6 @@ if (isStructType!(T)())
         // __traits(getMember, s, fn_s[c]) = __traits(getMember, s, fn_s[c]);
         writeln("Exmine member '", __traits(getMember, s, fn_s[c]), "'");
         
-        
-        _fs ~= fn_s[c];
 
         // if the current member's type is
         // a struct-type
@@ -115,15 +111,16 @@ if (isStructType!(T)())
             // sk.sink(fn_s[c]~"."~__traits(identifier, __traits(getMember, s, fn_s[c])));
 
             // recurse on each struct member
-            foreach (fn_inner; fieldsOf(__traits(getMember, s, fn_s[c]), p, generateName(fn_s[c], r)))
-            {
-                _fs ~= fn_s[c] ~ "." ~ fn_inner;
+            fieldsOf(__traits(getMember, s, fn_s[c]), p, generateName(fn_s[c], r));
+            // foreach (fn_inner; fieldsOf(__traits(getMember, s, fn_s[c]), p, generateName(fn_s[c], r)))
+            // {
+                // _fs ~= fn_s[c] ~ "." ~ fn_inner;
 
                 // mixin("s."~fn_s[c]) = ;
 
 				// p.provide(fn_s[c] ~ "." ~ fn_inner);
                 // writeln("Provided: ", p.provide(fn_s[c] ~ "." ~ fn_inner)); // todo: access here for saving
-            }
+            // }
         }
         // todo: disallow class types
         else static if(isClassType!(typeof(__traits(getMember, s, fn_s[c]))))
@@ -157,8 +154,6 @@ if (isStructType!(T)())
             
         }
     }
-
-    return _fs;
 }
 
 version (unittest)
@@ -173,10 +168,10 @@ version (unittest)
 
     class DummySink : Provider
     {
-        string[] _s;
+        bool[string] _s;
         public bool provideImpl(string n, ref string v)
         {
-            _s ~= n;
+            _s[n] = true;
             if(n == "adress")
             {
                 return false;
@@ -230,11 +225,10 @@ unittest
     auto mc = MinhaConfiguracao();
 
     auto ds = new DummySink();
-    auto s = fieldsOf(mc, ds, "");
-    writeln(s);
+    fieldsOf(mc, ds, "");
+    writeln("Provider had requests for: ", ds._s.keys);
     
-    writeln("Provider had requests for: ", ds._s);
-    
-    
+    // show how the struct was filed
+    // up
     writeln(mc);
 }
