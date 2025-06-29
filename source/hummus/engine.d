@@ -46,3 +46,59 @@ public class Engine : Provider
         return false;
     }
 }
+
+version(unittest)
+{
+    class DP1 : Provider
+    {
+        protected bool provideImpl(string n, ref string v)
+        {
+            if(n == "Key1")
+            {
+                v = "Value1";
+                return true;
+            }
+            
+            return false;
+        }
+    }
+    
+    class DP2 : Provider
+    {
+        protected bool provideImpl(string n, ref string v)
+        {
+            if(n == "Key2")
+            {
+                v = "Value2";
+                return true;
+            }
+            
+            return false;
+        }
+    }
+}
+
+unittest
+{
+    auto e = new Engine();
+    
+    auto opt1 = e.provide("Key1");
+    auto opt2 = e.provide("Key2");
+    assert(opt1.isEmpty());
+    assert(opt1.isEmpty());
+    
+    e.attach(new DP1());
+    opt1 = e.provide("Key1");
+    opt2 = e.provide("Key2");
+    assert(opt1.isPresent());
+    assert(opt1.get() == "Value1");
+    assert(opt2.isEmpty());
+    
+    e.attach(new DP2());
+    opt1 = e.provide("Key1");
+    opt2 = e.provide("Key2");
+    assert(opt1.isPresent());
+    assert(opt1.get() == "Value1");
+    assert(opt2.isPresent());
+    assert(opt2.get() == "Value2");
+}
