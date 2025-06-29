@@ -62,7 +62,7 @@ private string generateName(string n, string rootVal)
 // sink it into some sort of interface
 // that implements this
 //
-private string[] fieldsOf(T)(T s, Provider p, string r) // todo: niknaks - is-struct check
+private string[] fieldsOf(T)(ref T s, Provider p, string r) // todo: niknaks - is-struct check
 if (isStructType!(T)())
 {
     string[] _fs;
