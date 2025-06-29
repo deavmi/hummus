@@ -56,6 +56,12 @@ private string generateName(string n, string rootVal)
     return n;
 }
 
+package void fieldsOf(T)(ref T s, Provider p) // todo: niknaks - is-struct check
+{
+    // assume roots name is ""
+    fieldsOf(s, p, "");
+}
+
 //
 // this is a compile-time recursive
 // function that wil generate multiple
@@ -70,8 +76,12 @@ private string generateName(string n, string rootVal)
 // In order for naming to be hierachial
 // a rot value is passed along as an
 // auxillary piece of data
+// 
+// names will always be `fieldName`
+// and if in a struct then `structFieldName.fieldName`
+// and so on...
 //
-private void fieldsOf(T)(ref T s, Provider p, string r) // todo: niknaks - is-struct check
+package void fieldsOf(T)(ref T s, Provider p, string r) // todo: niknaks - is-struct check
 if (isStructType!(T)())
 {
     // compile time gen: assignment lines
