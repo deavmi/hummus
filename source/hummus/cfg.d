@@ -1,7 +1,7 @@
 module hummus.cfg;
 
 import std.traits : Fields, FieldNameTuple;
-import niknaks.meta : isStructType;
+import niknaks.meta : isStructType, isClassType;
 
 import gogga.mixins;
 
@@ -89,6 +89,16 @@ if (isStructType!(T)())
 				p.provide(fn_s[c] ~ "." ~ fn_inner);
                 // writeln("Provided: ", p.provide(fn_s[c] ~ "." ~ fn_inner)); // todo: access here for saving
             }
+        }
+        // todo: disallow class types
+        else static if(isClassType!(typeof(__traits(getMember, s, fn_s[c]))))
+        {
+        	pragma(msg, "We do not yet support class types, which '", fn_s[c], "' is");
+        	static assert(false);
+        }
+        else
+        {
+        	pragma(msg, "The '", fn_s[c], "' is a primitive type");
         }
     }
 
