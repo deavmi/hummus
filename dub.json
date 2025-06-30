@@ -4,11 +4,18 @@
 	],
 	"copyright": "Copyright © 2025, Tristan Brice Velloza Kildaire",
 	"dependencies": {
-		"gogga": ">=3.2.0",
 		"niknaks": ">=0.26.2"
 	},
 	"description": "Pluggable configuration engine",
 	"license": "LGPL-2.0-only",
 	"name": "hummus",
 	"targetType": "library",
+	"configurations": {
+	  "debug": {
+			"dependencies": {
+			    "gogga": ">=3.2.0"
+		  },
+			"versions": ["DBG_DEBUG_LOGGING", "DBG_VERBOSE_LOGGING"]
+		}
+	}
 }
