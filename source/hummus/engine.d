@@ -16,7 +16,7 @@ import std.string : format;
 
 // Else it keeps trying to call to the
 // one in the `Engine` itself
-private alias fill_outer = hummus.cfg.fill;
+import hummus.cfg : fill_outer = fill;
 
 /**
  * The `Engine` is a provider which
