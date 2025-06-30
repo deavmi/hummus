@@ -1,19 +1,21 @@
 /**
  * Automatic compile-time configuration
  * discovery and provisioning
+ *
+ * Authors: Tristan Brice Velloza Kildaire (deavmi)
  */
 module hummus.cfg;
 
 import std.traits : Fields, FieldNameTuple;
 import niknaks.meta : isStructType, isClassType;
 
-import gogga.mixins;
+import gogga.mixins; // todo: make part of optional compilation
 
+import std.string : format;
 import niknaks.functional : Optional;
-
 import hummus.provider;
 
-import std.stdio : writeln;
+import std.stdio : writeln; // todo: remove
 
 /**
  * Given a name and a root value
@@ -79,8 +81,6 @@ package void fieldsOf(T)(ref T s, Provider p)
 package void fieldsOf(T)(ref T s, Provider p, string r) // todo: niknaks - is-struct check
 if (isStructType!(T)())
 {
-    import std.string : format;
-
     // compile time gen: assignment lines
     alias ft_s = Fields!(T);
     alias fn_s = FieldNameTuple!(T);
