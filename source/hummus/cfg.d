@@ -14,7 +14,6 @@ import niknaks.functional : Optional;
 import hummus.provider;
 
 import std.stdio : writeln;
-import std.string : format;
 
 /**
  * Given a name and a root value
@@ -80,6 +79,8 @@ package void fieldsOf(T)(ref T s, Provider p)
 package void fieldsOf(T)(ref T s, Provider p, string r) // todo: niknaks - is-struct check
 if (isStructType!(T)())
 {
+    import std.string : format;
+
     // compile time gen: assignment lines
     alias ft_s = Fields!(T);
     alias fn_s = FieldNameTuple!(T);
