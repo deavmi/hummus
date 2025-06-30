@@ -52,7 +52,7 @@ public class Engine : Provider
     }
 }
 
-private alias fill_outer = fill;
+private alias fill_outer = hummus.engine.fill;
 
 version(unittest)
 {
