@@ -7,6 +7,8 @@
  * config with values that are
  * available as environment
  * variables
+ *
+ * Authors: Tristan Brice Velloza Kildaire (deavmi)
  */
 module hummus.providers.env;
 
