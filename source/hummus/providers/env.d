@@ -1,3 +1,13 @@
+/**
+ * Environment variable-based
+ * provider.
+ *
+ * You should use this if you
+ * intend on filling up your
+ * config with values that are
+ * available as environment
+ * variables
+ */
 module hummus.provides.env;
 
 import hummus.provider : Provider;
