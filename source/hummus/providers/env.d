@@ -8,17 +8,17 @@
  * available as environment
  * variables
  */
-module hummus.provides.env;
+module hummus.providers.env;
 
 import hummus.provider : Provider;
 import std.process : environment;
 
-/** 
+/**
  * A provider which will look for
  * environment variables based
  * on a _transformed_ version of
  * their name.
- * 
+ *
  * This transformation replaces all
  * `.` with a character of your
  * choice (default is `__`) and
@@ -28,10 +28,10 @@ import std.process : environment;
 public class EnvironmentProvider : Provider
 {
 	private string _dp;
-	
+
 	this(string dotReplace)
 	{
-		this._dp = dotReplace;	
+		this._dp = dotReplace;
 	}
 
 	this()
@@ -49,7 +49,7 @@ public class EnvironmentProvider : Provider
     	// replace `.` with `_dp`
         import std.string : replace;
         trans_n = replace(trans_n, ".", this._dp);
-        
+
         // todo: switch to nothrow version
         try
         {
@@ -76,21 +76,21 @@ unittest
 	{
 		writeln();
 	}
-	
+
     struct Inner
     {
         int z;
     }
-    
+
     struct Cfg
     {
         string v;
         Inner i;
     }
-    
+
     auto cfg = Cfg();
     writeln("Before provisioning: ", cfg);
-    
+
     // envvars `v` and `i.z` should be present
     fieldsOf(cfg, new EnvironmentProvider());
 
