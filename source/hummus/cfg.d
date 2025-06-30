@@ -204,6 +204,12 @@ version (unittest)
     }
 }
 
+/**
+ * Tests the discovery and filling
+ * process on a complex structure
+ * which fields that are of structure
+ * types too (nested structures).
+ */
 unittest
 {
     struct X
