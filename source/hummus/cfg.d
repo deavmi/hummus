@@ -1,3 +1,7 @@
+/**
+ * Automatic compile-time configuration
+ * discovery and provisioning
+ */
 module hummus.cfg;
 
 import std.traits : Fields, FieldNameTuple;
@@ -12,11 +16,24 @@ import hummus.provider;
 import std.stdio : writeln;
 import std.string : format;
 
+/**
+ * Given a name and a root value
+ * this will generate the name as
+ * `<rootVal>.<n>` if and only if
+ * `rootVal` is not empty. If it
+ * is empty then the name is returned
+ * as `n`, unchanged.
+ *
+ * Params:
+ *   n = the name
+ *   rootVal = the root value
+ * Returns: the transformed name
+ */
 private string generateName(string n, string rootVal)
 {
-    if(rootVal.length)
+    if (rootVal.length)
     {
-        return rootVal~"."~n;
+        return rootVal ~ "." ~ n;
     }
     return n;
 }
@@ -33,15 +50,15 @@ package void fieldsOf(T)(ref T s, Provider p) // todo: niknaks - is-struct check
 // versions of itself in order to discover
 // the full structure of the struct
 // type `T`.
-// 
+//
 // The struct will be updated via `ref`
 // (via reference) and values will be
 // assigned to it via the provider `p`.
-// 
+//
 // In order for naming to be hierachial
 // a rot value is passed along as an
 // auxillary piece of data
-// 
+//
 // names will always be `fieldName`
 // and if in a struct then `structFieldName.fieldName`
 // and so on...
@@ -54,17 +71,17 @@ if (isStructType!(T)())
     alias fn_s = FieldNameTuple!(T);
 
     writeln("Struct on entry: ", s);
-    scope(exit)
+    scope (exit)
     {
         writeln("Struct on exit: ", s);
     }
-    
+
     writeln("Fields of struct: '", __traits(identifier, T), "'");
-    scope(exit)
+    scope (exit)
     {
         writeln("Processed '", __traits(identifier, T), "'");
     }
-    
+
     // Loop through each pair and process
     static foreach (c; 0 .. fn_s.length)
     {
@@ -73,7 +90,6 @@ if (isStructType!(T)())
         // assignment would look like below
         // __traits(getMember, s, fn_s[c]) = __traits(getMember, s, fn_s[c]);
         writeln("Exmine member '", __traits(getMember, s, fn_s[c]), "'");
-        
 
         // if the current member's type is
         // a struct-type
@@ -89,44 +105,43 @@ if (isStructType!(T)())
             fieldsOf(__traits(getMember, s, fn_s[c]), p, generateName(fn_s[c], r));
             // foreach (fn_inner; fieldsOf(__traits(getMember, s, fn_s[c]), p, generateName(fn_s[c], r)))
             // {
-                // _fs ~= fn_s[c] ~ "." ~ fn_inner;
+            // _fs ~= fn_s[c] ~ "." ~ fn_inner;
 
-                // mixin("s."~fn_s[c]) = ;
+            // mixin("s."~fn_s[c]) = ;
 
-				// p.provide(fn_s[c] ~ "." ~ fn_inner);
-                // writeln("Provided: ", p.provide(fn_s[c] ~ "." ~ fn_inner)); // todo: access here for saving
+            // p.provide(fn_s[c] ~ "." ~ fn_inner);
+            // writeln("Provided: ", p.provide(fn_s[c] ~ "." ~ fn_inner)); // todo: access here for saving
             // }
         }
         // todo: disallow class types
-        else static if(isClassType!(typeof(__traits(getMember, s, fn_s[c]))))
+        else static if (isClassType!(typeof(__traits(getMember, s, fn_s[c]))))
         {
-        	pragma(msg, "We do not yet support class types, which '", fn_s[c], "' is");
-        	static assert(false);
+            pragma(msg, "We do not yet support class types, which '", fn_s[c], "' is");
+            static assert(false);
         }
         else
         {
-        	pragma(msg, "The '", fn_s[c], "' is a primitive type");
+            pragma(msg, "The '", fn_s[c], "' is a primitive type");
 
-        	// ask provider for value, if it has one, then
+            // ask provider for value, if it has one, then
             // attempt to assign it
             // auto opt = p.provide(fn_s[c]);
             // if(opt) fixme: make that work
             // todo: find a way to make temp vars
             // if(p.provide(fn_s[c]).isPresent())
-            if(p.provide(generateName(fn_s[c], r)).isPresent())
+            if (p.provide(generateName(fn_s[c], r)).isPresent())
             {
                 // todo: catch failing to!(T)(V) call exception
                 import std.conv : to;
+
                 DEBUG(format("Trying to convert '%s'", p.provide(generateName(fn_s[c], r)).get()));
-                __traits(getMember, s, fn_s[c]) = to!
-                (
+                __traits(getMember, s, fn_s[c]) = to!(
                     typeof(__traits(getMember, s, fn_s[c]))
-                )
-                (
+                )(
                     p.provide(generateName(fn_s[c], r)).get()
                 );
             }
-            
+
         }
     }
 }
@@ -147,21 +162,21 @@ version (unittest)
         public bool provideImpl(string n, ref string v)
         {
             _s[n] = true;
-            if(n == "adress")
+            if (n == "adress")
             {
                 return false;
             }
-            else if(n == "porto")
+            else if (n == "porto")
             {
                 v = "443";
                 return true;
             }
-            else if(n == "s.x")
+            else if (n == "s.x")
             {
                 v = "10";
                 return true;
             }
-            else if(n == "s.y")
+            else if (n == "s.y")
             {
                 v = "-10";
                 return true;
@@ -202,7 +217,7 @@ unittest
     auto ds = new DummySink();
     fieldsOf(mc, ds, "");
     writeln("Provider had requests for: ", ds._s.keys);
-    
+
     // show how the struct was filed
     // up
     writeln(mc);
