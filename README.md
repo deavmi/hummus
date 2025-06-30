@@ -5,11 +5,43 @@ hummus
 
 # Usage
 
-TODO: Ad something about environment provider
-and the transformation it uses
+Below is an example of how we can use a provider
+to fill up the values within a complex data structure:
 
-```
-V=1 I__Z=2 dub test
+```d
+struct X
+{
+    private string p;
+}
+
+struct A
+{
+    private int x, y;
+    private X z;
+}
+
+struct MinhaConfiguracao
+{
+    private string adres;
+    private size_t porto;
+    private A s;
+    // private A si;
+}
+
+auto mc = MinhaConfiguracao();
+
+auto ds = new DummySink();
+fill(mc, ds);
+writeln("Provider had requests for: ", ds._s.keys);
+
+// show how the struct was filed
+// up
+writeln(mc);
+
+assert(mc.porto == 443);
+assert(mc.s.x == 10);
+assert(mc.s.y == -10);
+}
 ```
 
 # Development
