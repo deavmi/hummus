@@ -96,7 +96,7 @@ public class Engine : Provider
 
 version (unittest)
 {
-    class DP1 : Provider
+    private class DP1 : Provider
     {
         protected bool provideImpl(string n, ref string v)
         {
@@ -110,7 +110,7 @@ version (unittest)
         }
     }
 
-    class DP2 : Provider
+    private class DP2 : Provider
     {
         protected bool provideImpl(string n, ref string v)
         {
