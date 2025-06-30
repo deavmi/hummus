@@ -112,33 +112,18 @@ if (isStructType!(T)())
         version(unittest)
         writeln("Exmine member '", fn_s[c], "'");
 
-        // assignment would look like below
-        // __traits(getMember, s, fn_s[c]) = __traits(getMember, s, fn_s[c]);
         version(unittest)
         writeln("Exmine member '", __traits(getMember, s, fn_s[c]), "'");
 
         // if the current member's type is
         // a struct-type
-        // todo: try use below
-        // mixin("alias _mem",c) = T;
         static if (isStructType!(typeof(__traits(getMember, s, fn_s[c]))))
         {
             version(unittest)
                 pragma(msg, "The '", fn_s[c], "' is a struct type");
-            // pragma(msg, fn_s[c]~"."~__traits(identifier, __traits(getMember, s, fn_s[c])));
-            // sk.sink(fn_s[c]~"."~__traits(identifier, __traits(getMember, s, fn_s[c])));
 
             // recurse on this member (it is a struct type)
             fieldsOf(__traits(getMember, s, fn_s[c]), p, generateName(fn_s[c], r));
-            // foreach (fn_inner; fieldsOf(__traits(getMember, s, fn_s[c]), p, generateName(fn_s[c], r)))
-            // {
-            // _fs ~= fn_s[c] ~ "." ~ fn_inner;
-
-            // mixin("s."~fn_s[c]) = ;
-
-            // p.provide(fn_s[c] ~ "." ~ fn_inner);
-            // writeln("Provided: ", p.provide(fn_s[c] ~ "." ~ fn_inner)); // todo: access here for saving
-            // }
         }
         // todo: disallow class types
         else static if (isClassType!(typeof(__traits(getMember, s, fn_s[c]))))
@@ -153,10 +138,6 @@ if (isStructType!(T)())
 
             // ask provider for value, if it has one, then
             // attempt to assign it
-            // auto opt = p.provide(fn_s[c]);
-            // if(opt) fixme: make that work
-            // todo: find a way to make temp vars
-            // if(p.provide(fn_s[c]).isPresent())
             if (p.provide(generateName(fn_s[c], r)).isPresent())
             {
                 // todo: catch failing to!(T)(V) call exception
