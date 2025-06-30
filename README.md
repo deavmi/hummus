@@ -13,6 +13,7 @@ to fill up the values within a complex data structure:
 
 ```d
 import  hummus.cfg : fill;
+import std.stdio : writeln;
 
 struct X
 {
