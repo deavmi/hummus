@@ -167,11 +167,6 @@ if (isStructType!(T)())
 version (unittest)
 {
     import std.stdio : writeln;
-}
-
-version (unittest)
-{
-    import std.stdio : writeln;
     import std.string : format;
 
     class DummySink : Provider
