@@ -125,6 +125,11 @@ version (unittest)
     }
 }
 
+/**
+ * Attach two providers to an engine
+ * and then test out querying for
+ * names
+ */
 unittest
 {
     auto e = new Engine();
