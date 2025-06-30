@@ -47,7 +47,7 @@ private string generateName(string n, string rootVal)
  *   s = the structure
  *   p = the provider for names
  */
-package void fieldsOf(T)(ref T s, Provider p) // todo: niknaks - is-struct check
+package void fieldsOf(T)(ref T s, Provider p)
 {
     // assume roots name is ""
     fieldsOf(s, p, "");
