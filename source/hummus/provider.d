@@ -1,5 +1,7 @@
 /**
  * Definition for the provider interface
+ *
+ * Authors: Tristan Brice Velloza Kildaire (deavmi)
  */
 module hummus.provider;
 
