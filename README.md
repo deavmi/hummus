@@ -30,7 +30,6 @@ struct MinhaConfiguracao
     private string adres;
     private size_t porto;
     private A s;
-    // private A si;
 }
 
 auto mc = MinhaConfiguracao();
