@@ -36,12 +36,14 @@ auto mc = MinhaConfiguracao();
 
 auto ds = new DummySink();
 fill(mc, ds);
-writeln("Provider had requests for: ", ds._s.keys);
 
 // show how the struct was filed
 // up
 writeln(mc);
 
+// check values and make sure
+// everything is there as
+// expected
 assert(mc.porto == 443);
 assert(mc.s.x == 10);
 assert(mc.s.y == -10);
