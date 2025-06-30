@@ -57,6 +57,8 @@ have been filled out when we did `writeln(mc)`:
 MinhaConfiguracao("v:adres", 443, A(10, -10, X("v:s.z.p")))
 ```
 
+View the [full documentation](https://hummus.dpldocs.info/index.html).
+
 ## Providers
 
 If you want to implement a provider then take a look
