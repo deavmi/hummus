@@ -9,6 +9,9 @@ import niknaks.functional : Optional;
 
 import hummus.provider;
 
+import std.stdio : writeln;
+import std.string : format;
+
 private string generateName(string n, string rootVal)
 {
     if(rootVal.length)
