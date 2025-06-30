@@ -48,9 +48,11 @@ public class Engine : Provider
 
     public void fill(T)(ref T structInstance)
     {
-    	fill(structInstance, this);
+    	fill_outer(structInstance, this);
     }
 }
+
+private alias fill_outer = fill;
 
 version(unittest)
 {
@@ -85,27 +87,38 @@ version(unittest)
 
 unittest
 {
-    // auto e = new Engine();
+    auto e = new Engine();
     
-    // auto opt1 = e.provide("Key1");
-    // auto opt2 = e.provide("Key2");
-    // assert(opt1.isEmpty());
-    // assert(opt1.isEmpty());
+    auto opt1 = e.provide("Key1");
+    auto opt2 = e.provide("Key2");
+    assert(opt1.isEmpty());
+    assert(opt1.isEmpty());
     
-    // e.attach(new DP1());
-    // opt1 = e.provide("Key1");
-    // opt2 = e.provide("Key2");
-    // assert(opt1.isPresent());
-    // assert(opt1.get() == "Value1");
-    // assert(opt2.isEmpty());
+    e.attach(new DP1());
+    opt1 = e.provide("Key1");
+    opt2 = e.provide("Key2");
+    assert(opt1.isPresent());
+    assert(opt1.get() == "Value1");
+    assert(opt2.isEmpty());
     
-    // e.attach(new DP2());
-    // opt1 = e.provide("Key1");
-    // opt2 = e.provide("Key2");
-    // assert(opt1.isPresent());
-    // assert(opt1.get() == "Value1");
-    // assert(opt2.isPresent());
-    // assert(opt2.get() == "Value2");
+    e.attach(new DP2());
+    opt1 = e.provide("Key1");
+    opt2 = e.provide("Key2");
+    assert(opt1.isPresent());
+    assert(opt1.get() == "Value1");
+    assert(opt2.isPresent());
+    assert(opt2.get() == "Value2");
+
+
+	struct F
+	{
+		string Key1;
+		string Key2;
+	}
+	auto f = F();
+    e.fill(f);
+    assert(f.Key1 == "Value1");
+    assert(f.Key2 == "Value2");
 }
 
 
