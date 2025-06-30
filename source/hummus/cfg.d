@@ -267,4 +267,8 @@ unittest
     // show how the struct was filed
     // up
     writeln(mc);
+
+    assert(mc.porto == 443);
+    assert(mc.s.x == 10);
+    assert(mc.s.y == -10);
 }
