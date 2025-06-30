@@ -29,4 +29,8 @@ jobs:
         # Build and run tests, as defined by `unittest` configuration
         # In this mode, `mainSourceFile` is excluded and `version (unittest)` are included
         # See https://dub.pm/package-format-json.html#configurations
-        V=1 I__Z=2 dub test --compiler=$DC
+        V=1 I__Z=2 dub test --compiler=$DC --coverage
+
+    - name: Coverage upload
+      run: |
+          dub run doveralls -- -t ${{secrets.COVERALLS_REPO_TOKEN}}
