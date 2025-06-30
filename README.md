@@ -12,6 +12,8 @@ Below is an example of how we can use a provider
 to fill up the values within a complex data structure:
 
 ```d
+import  hummus.cfg : fill;
+
 struct X
 {
     private string p;
