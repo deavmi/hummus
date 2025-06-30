@@ -45,6 +45,11 @@ public class Engine : Provider
         }
         return false;
     }
+
+    public void fill(T)(ref T structInstance)
+    {
+    	fill(structInstance, this);
+    }
 }
 
 version(unittest)
