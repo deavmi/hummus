@@ -1,6 +1,8 @@
 hummus
 ======
 
+![DUB](https://img.shields.io/dub/v/hummus?color=%23c10000ff%20&style=flat-square) ![DUB](https://img.shields.io/dub/dt/hummus?style=flat-square) ![DUB](https://img.shields.io/dub/l/hummus?style=flat-square)
+
 # Usage
 
 TODO: Ad something about environment provider
