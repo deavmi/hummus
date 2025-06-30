@@ -54,7 +54,9 @@ public class EnvironmentProvider : Provider
 		this("__");
 	}
 
-    // todo: can '.''s work - I think so?
+    /**
+     * Implementation
+     */
     protected bool provideImpl(string n, ref string v)
     {
 		// upper-case everything
