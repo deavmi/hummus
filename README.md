@@ -58,7 +58,7 @@ MinhaConfiguracao("v:adres", 443, A(10, -10, X("v:s.z.p")))
 ## Providers
 
 If you want to implement a provider then take a look
-at the [documentation]() so you can see what you would
+at the [documentation](https://hummus.dpldocs.info/hummus.provider.Provider.html) so you can see what you would
 need to implement.
 
 The providers that come with this package are:
