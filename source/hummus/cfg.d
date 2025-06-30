@@ -53,10 +53,6 @@ package void fieldsOf(T)(ref T s, Provider p)
     fieldsOf(s, p, "");
 }
 
-//
-
-//
-
 /**
  * This is a compile-time recursive
  * function that wil generate multiple
