@@ -4,12 +4,6 @@
  */
 module hummus.engine;
 
-// todo: some engine with multiple providers that
-// can be queried. It itself can be placed into the
-// discovery method or not. I will have to decide.
-
-// it probably can be if we model it, itself, as a provider
-
 import hummus.provider;
 import gogga.mixins; // todo: make part of optional compilation
 import std.string : format;
@@ -27,6 +21,11 @@ import hummus.cfg : fill_outer = fill;
  * is found in a provider then it
  * is returned, else the next provider
  * is checked.
+ *
+ * The order in which providers are
+ * attached is important as that
+ * is the order in which they will
+ * be queried
  */
 public class Engine : Provider
 {
