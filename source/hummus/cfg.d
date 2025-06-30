@@ -196,7 +196,7 @@ version (unittest)
     import std.stdio : writeln;
     import std.string : format;
 
-    class DummySink : Provider
+    private class DummySink : Provider
     {
         bool[string] _s;
         public bool provideImpl(string n, ref string v)
