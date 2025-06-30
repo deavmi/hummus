@@ -128,7 +128,7 @@ if (isStructType!(T)())
             // pragma(msg, fn_s[c]~"."~__traits(identifier, __traits(getMember, s, fn_s[c])));
             // sk.sink(fn_s[c]~"."~__traits(identifier, __traits(getMember, s, fn_s[c])));
 
-            // recurse on each struct member
+            // recurse on this member (it is a struct type)
             fieldsOf(__traits(getMember, s, fn_s[c]), p, generateName(fn_s[c], r));
             // foreach (fn_inner; fieldsOf(__traits(getMember, s, fn_s[c]), p, generateName(fn_s[c], r)))
             // {
