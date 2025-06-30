@@ -29,11 +29,26 @@ public class EnvironmentProvider : Provider
 {
 	private string _dp;
 
+	/**
+	 * Constructs a new environment
+	 * provider and uses the given
+	 * token to replace all occurrences
+     * of `.` in names
+     *
+     * Params:
+     *   dotReplace = the replaceent token
+     */
 	this(string dotReplace)
 	{
 		this._dp = dotReplace;
 	}
 
+	/**
+	 * Constructs a new environment
+     * provider and uses the `__`
+     * token as the replacement
+     * token
+     */
 	this()
 	{
 		this("__");
