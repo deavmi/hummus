@@ -5,8 +5,12 @@
 module hummus.engine;
 
 import hummus.provider;
-import gogga.mixins; // todo: make part of optional compilation
-import std.string : format;
+
+version(unittest)
+{
+    import gogga.mixins;
+    import std.string : format;
+}
 
 // Else it keeps trying to call to the
 // one in the `Engine` itself
@@ -55,7 +59,8 @@ public class Engine : Provider
         }
         this._ps ~= p;
 
-        DEBUG(format("Attached provider '%s'", p));
+        version(unittest)
+            DEBUG(format("Attached provider '%s'", p));
     }
 
     protected bool provideImpl(string n, ref string v)

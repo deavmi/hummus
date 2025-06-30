@@ -3,7 +3,11 @@
  */
 module hummus.provider;
 
-import gogga.mixins; // todo: make these built in to only non-release builds
+version(unittest)
+{
+    import gogga.mixins;
+    import std.string : format;
+}
 
 import niknaks.functional : Optional;
 
@@ -15,8 +19,6 @@ import niknaks.functional : Optional;
  */
 public interface Provider
 {
-    import std.string : format;
-
     /**
      * The implementation method for a provider.
      * This must return `true` when an entry by
@@ -43,16 +45,19 @@ public interface Provider
      */
     public final Optional!(string) provide(string name)
     {
-        DEBUG(format("Looking up configuration entry for '%s'...", name));
+        version(unittest)
+            DEBUG(format("Looking up configuration entry for '%s'...", name));
 
         string _v;
         if (!provideImpl(name, _v))
         {
-            ERROR(format("No value mapping for '%s'", name));
+            version(unittest)
+                ERROR(format("No value mapping for '%s'", name));
             return Optional!(string).empty();
         }
 
-        INFO(format("Mapped name '%s' to value '%s'", name, _v));
+        version(unittest)
+            INFO(format("Mapped name '%s' to value '%s'", name, _v));
         return Optional!(string)(_v);
     }
 }

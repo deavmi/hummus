@@ -9,13 +9,19 @@ module hummus.cfg;
 import std.traits : Fields, FieldNameTuple;
 import niknaks.meta : isStructType, isClassType;
 
-import gogga.mixins; // todo: make part of optional compilation
+version(unittest)
+{
+    import gogga.mixins;
+}
 
 import std.string : format;
 import niknaks.functional : Optional;
 import hummus.provider;
 
-import std.stdio : writeln; // todo: remove
+version(unittest)
+{
+    import std.stdio : writeln;
+}
 
 /**
  * Given a name and a root value
@@ -85,25 +91,30 @@ if (isStructType!(T)())
     alias ft_s = Fields!(T);
     alias fn_s = FieldNameTuple!(T);
 
-    writeln("Struct on entry: ", s);
-    scope (exit)
+    version(unittest)
     {
-        writeln("Struct on exit: ", s);
-    }
+        writeln("Struct on entry: ", s);
+        scope (exit)
+        {
+            writeln("Struct on exit: ", s);
+        }
 
-    writeln("Fields of struct: '", __traits(identifier, T), "'");
-    scope (exit)
-    {
-        writeln("Processed '", __traits(identifier, T), "'");
+        writeln("Fields of struct: '", __traits(identifier, T), "'");
+        scope (exit)
+        {
+            writeln("Processed '", __traits(identifier, T), "'");
+        }
     }
 
     // Loop through each pair and process
     static foreach (c; 0 .. fn_s.length)
     {
+        version(unittest)
         writeln("Exmine member '", fn_s[c], "'");
 
         // assignment would look like below
         // __traits(getMember, s, fn_s[c]) = __traits(getMember, s, fn_s[c]);
+        version(unittest)
         writeln("Exmine member '", __traits(getMember, s, fn_s[c]), "'");
 
         // if the current member's type is
@@ -112,7 +123,8 @@ if (isStructType!(T)())
         // mixin("alias _mem",c) = T;
         static if (isStructType!(typeof(__traits(getMember, s, fn_s[c]))))
         {
-            pragma(msg, "The '", fn_s[c], "' is a struct type");
+            version(unittest)
+                pragma(msg, "The '", fn_s[c], "' is a struct type");
             // pragma(msg, fn_s[c]~"."~__traits(identifier, __traits(getMember, s, fn_s[c])));
             // sk.sink(fn_s[c]~"."~__traits(identifier, __traits(getMember, s, fn_s[c])));
 
@@ -136,7 +148,8 @@ if (isStructType!(T)())
         }
         else
         {
-            pragma(msg, "The '", fn_s[c], "' is a primitive type");
+            version(unittest)
+                pragma(msg, "The '", fn_s[c], "' is a primitive type");
 
             // ask provider for value, if it has one, then
             // attempt to assign it
@@ -149,7 +162,9 @@ if (isStructType!(T)())
                 // todo: catch failing to!(T)(V) call exception
                 import std.conv : to;
 
-                DEBUG(format("Trying to convert '%s'", p.provide(generateName(fn_s[c], r)).get()));
+                version(unittest)
+                    DEBUG(format("Trying to convert '%s'", p.provide(generateName(fn_s[c], r)).get()));
+
                 __traits(getMember, s, fn_s[c]) = to!(
                     typeof(__traits(getMember, s, fn_s[c]))
                 )(
