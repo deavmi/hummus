@@ -55,6 +55,21 @@ have been filled out when we did `writeln(mc)`:
 MinhaConfiguracao("v:adres", 443, A(10, -10, X("v:s.z.p")))
 ```
 
+## Providers
+
+If you want to implement a provider then take a look
+at the [documentation]() so you can see what you would
+need to implement.
+
+The providers that come with this package are:
+
+1. `EnvironmentProvider`
+  * This uses environment variables to provision
+  * Module name is `hummus.providers.env`
+2. `JSONProvider`
+  * This uses a JSON file to provision
+  * Module name is `hummus.providers.json`
+
 # Development
 
 ## Testing
