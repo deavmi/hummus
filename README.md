@@ -43,6 +43,13 @@ assert(mc.s.x == 10);
 assert(mc.s.y == -10);
 ```
 
+Right at the end we can see how all the values would
+have been filled out when we did `writeln(mc)`:
+
+```
+MinhaConfiguracao("v:adres", 443, A(10, -10, X("v:s.z.p")))
+```
+
 # Development
 
 ## Testing
