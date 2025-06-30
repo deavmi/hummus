@@ -161,6 +161,25 @@ if (isStructType!(T)())
  * Given a structure and a provider this
  * will discover all the required fields
  * and then fill those fields with values
+ * provided by the provider.
+ *
+ * The root name will prefix all names
+ * as `<rootName>.`
+ *
+ * Params:
+ *   structType = the structure
+ *   p = the provider
+ *   rootName = name of the root
+ */
+public void fill(T)(ref T structType, Provider p, string rootName)
+{
+    fieldsOf(structType, p, rootName);
+}
+
+/**
+ * Given a structure and a provider this
+ * will discover all the required fields
+ * and then fill those fields with values
  * provided by the provider
  *
  * Params:
@@ -242,7 +261,7 @@ unittest
     auto mc = MinhaConfiguracao();
 
     auto ds = new DummySink();
-    fieldsOf(mc, ds, "");
+    fill(mc, ds);
     writeln("Provider had requests for: ", ds._s.keys);
 
     // show how the struct was filed
