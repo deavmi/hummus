@@ -1,5 +1,8 @@
+/**
+ * An engine for provisioning via
+ * multiple providers
+ */
 module hummus.engine;
-
 
 // todo: some engine with multiple providers that
 // can be queried. It itself can be placed into the
@@ -8,21 +11,45 @@ module hummus.engine;
 // it probably can be if we model it, itself, as a provider
 
 import hummus.provider;
-import gogga.mixins;
+import gogga.mixins; // todo: make part of optional compilation
 import std.string : format;
 
+// Else it keeps trying to call to the
+// one in the `Engine` itself
+private alias fill_outer = hummus.cfg.fill;
+
+/**
+ * The `Engine` is a provider which
+ * allows multiple _other_ providers
+ * to be attached to it.
+ *
+ * During provisioning if a name
+ * is found in a provider then it
+ * is returned, else the next provider
+ * is checked.
+ */
 public class Engine : Provider
 {
     private Provider[] _ps;
 
+    /**
+     * Constructs a new engine with
+     * no providers attached
+     */
     this()
     {
 
     }
 
+    /**
+     * Attach a provider
+     *
+     * Params:
+     *   p = the provider to attach
+     */
     public void attach(Provider p)
     {
-        if(p is null)
+        if (p is null)
         {
             // todo: check
             return;
@@ -34,10 +61,10 @@ public class Engine : Provider
 
     protected bool provideImpl(string n, ref string v)
     {
-        foreach(Provider p; this._ps)
+        foreach (Provider p; this._ps)
         {
             auto pr_opt = p.provide(n);
-            if(pr_opt.isPresent())
+            if (pr_opt.isPresent())
             {
                 v = pr_opt.get();
                 return true;
@@ -46,40 +73,47 @@ public class Engine : Provider
         return false;
     }
 
+    /**
+     * Given a structure this will fill
+     * it up with values by querying
+     * the attached provider(s)
+     *
+     * Params:
+     *   structInstance = the structure
+     * to provision
+     */
     public void fill(T)(ref T structInstance)
     {
-    	fill_outer(structInstance, this);
+        fill_outer(structInstance, this);
     }
 }
 
-private alias fill_outer = hummus.engine.fill;
-
-version(unittest)
+version (unittest)
 {
     class DP1 : Provider
     {
         protected bool provideImpl(string n, ref string v)
         {
-            if(n == "Key1")
+            if (n == "Key1")
             {
                 v = "Value1";
                 return true;
             }
-            
+
             return false;
         }
     }
-    
+
     class DP2 : Provider
     {
         protected bool provideImpl(string n, ref string v)
         {
-            if(n == "Key2")
+            if (n == "Key2")
             {
                 v = "Value2";
                 return true;
             }
-            
+
             return false;
         }
     }
@@ -88,19 +122,19 @@ version(unittest)
 unittest
 {
     auto e = new Engine();
-    
+
     auto opt1 = e.provide("Key1");
     auto opt2 = e.provide("Key2");
     assert(opt1.isEmpty());
     assert(opt1.isEmpty());
-    
+
     e.attach(new DP1());
     opt1 = e.provide("Key1");
     opt2 = e.provide("Key2");
     assert(opt1.isPresent());
     assert(opt1.get() == "Value1");
     assert(opt2.isEmpty());
-    
+
     e.attach(new DP2());
     opt1 = e.provide("Key1");
     opt2 = e.provide("Key2");
@@ -109,24 +143,14 @@ unittest
     assert(opt2.isPresent());
     assert(opt2.get() == "Value2");
 
+    struct F
+    {
+        string Key1;
+        string Key2;
+    }
 
-	struct F
-	{
-		string Key1;
-		string Key2;
-	}
-	auto f = F();
+    auto f = F();
     e.fill(f);
     assert(f.Key1 == "Value1");
     assert(f.Key2 == "Value2");
-}
-
-
-
-public void fill(T)(ref T structType, Provider p)
-// todo: isStructType
-{
-    import hummus.cfg : fieldsOf;
-    
-    fieldsOf(structType, p);
 }

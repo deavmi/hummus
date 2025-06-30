@@ -161,6 +161,21 @@ if (isStructType!(T)())
     }
 }
 
+/**
+ * Given a structure and a provider this
+ * will discover all the required fields
+ * and then fill those fields with values
+ * provided by the provider
+ *
+ * Params:
+ *   structType = the structure
+ *   p = the provider
+ */
+public void fill(T)(ref T structType, Provider p)
+{
+    fieldsOf(structType, p);
+}
+
 version (unittest)
 {
     import std.stdio : writeln;
