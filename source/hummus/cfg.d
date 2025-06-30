@@ -38,6 +38,15 @@ private string generateName(string n, string rootVal)
     return n;
 }
 
+/**
+ * Generates the field names of the given
+ * structure and fills them in with values
+ * from the given provider.
+ *
+ * Params:
+ *   s = the structure
+ *   p = the provider for names
+ */
 package void fieldsOf(T)(ref T s, Provider p) // todo: niknaks - is-struct check
 {
     // assume roots name is ""
