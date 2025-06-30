@@ -72,6 +72,12 @@ The providers that come with this package are:
   * This uses a JSON file to provision
   * Module name is `hummus.providers.json`
 
+### `EnvironmentProvider`
+
+A name like `root.a` will be translated to
+a search for an environment variable named
+`ROOT__A`.
+
 # Development
 
 ## Testing
