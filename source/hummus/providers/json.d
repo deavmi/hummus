@@ -18,54 +18,84 @@ public class JSONProvider : Provider
 
     protected bool provideImpl(string n, ref string v)
     {
-        import std.stdio : writeln;
-        string[] c;
-        if(dotExtract(n, c) == false)
+        // todo: check return value for nullity
+        JSONValue* f_node = traverseTo(n, &this._j);
+
+        // todo: value conversion here
+        if(f_node is null)
         {
-            writeln("direct access for: ", n);
-
-            JSONValue* p = n in this._j;
-            if(p)
-            {
-                string finalV;
-
-                // todo: bail on unsupported types
-
-                // de-stringatize if it is a JSON string
-                if(p.type() == JSONType.string)
-                {
-
-                    // finalV = p.str()[]
-                }
-                else
-                {
-                    finalV = p.toString();
-                }
-                // import std.string : strip
-                // todo: value must be vconverte here
-                writeln("finalV: ", finalV);
-
-                v = finalV;
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-
-            pragma(msg, typeof(p));
-        }
-        else
-        {
-            writeln("Access path: ", c);
+            return false;
         }
 
-        // todo: use dot-explorer on the JSONValue
+        string s = jsonNormal(f_node);
+        writeln("found JSON node toString(): ", s);
+        v = s;
         return true;
+
+
+        // import std.stdio : writeln;
+        // string[] c;
+        // if(dotExtract(n, c) == false)
+        // {
+        //     writeln("direct access for: ", n);
+
+        //     JSONValue* p = n in this._j;
+        //     if(p)
+        //     {
+        //         string finalV;
+
+        //         // todo: bail on unsupported types
+
+        //         // de-stringatize if it is a JSON string
+        //         if(p.type() == JSONType.string)
+        //         {
+
+        //             // finalV = p.str()[]
+        //         }
+        //         else
+        //         {
+        //             finalV = p.toString();
+        //         }
+        //         // import std.string : strip
+        //         // todo: value must be vconverte here
+        //         writeln("finalV: ", finalV);
+
+        //         v = finalV;
+        //         return true;
+        //     }
+        //     else
+        //     {
+        //         return false;
+        //     }
+
+        //     pragma(msg, typeof(p));
+        // }
+        // else
+        // {
+        //     writeln("Access path: ", c);
+        // }
+
+        // // todo: use dot-explorer on the JSONValue
+        // return true;
     }
 }
 
 import std.json : JSONValue;
+
+import std.json : JSONType;
+private string jsonNormal(JSONValue* i)
+{
+    if(i.type() == JSONType.string)
+    {
+        string s = i.str();
+        return s;
+    }
+    // todo: disallow array types and object types
+    else
+    {
+        return i.toString();
+    }
+}
 
 // todo: this belongs in the niknaks library
 private JSONValue* traverseTo(string path, JSONValue* start)
@@ -142,6 +172,6 @@ unittest
     // input JSON
     fieldsOf(cfg, new JSONProvider(json));
 
-    // assert(cfg.name == "Tristan Brice Velloza Kildaire");
+    assert(cfg.name == "Tristan Brice Velloza Kildaire");
     assert(cfg.age == 25);
 }
