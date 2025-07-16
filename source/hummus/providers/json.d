@@ -31,52 +31,6 @@ public class JSONProvider : Provider
         writeln("found JSON node toString(): ", s);
         v = s;
         return true;
-
-
-        // import std.stdio : writeln;
-        // string[] c;
-        // if(dotExtract(n, c) == false)
-        // {
-        //     writeln("direct access for: ", n);
-
-        //     JSONValue* p = n in this._j;
-        //     if(p)
-        //     {
-        //         string finalV;
-
-        //         // todo: bail on unsupported types
-
-        //         // de-stringatize if it is a JSON string
-        //         if(p.type() == JSONType.string)
-        //         {
-
-        //             // finalV = p.str()[]
-        //         }
-        //         else
-        //         {
-        //             finalV = p.toString();
-        //         }
-        //         // import std.string : strip
-        //         // todo: value must be vconverte here
-        //         writeln("finalV: ", finalV);
-
-        //         v = finalV;
-        //         return true;
-        //     }
-        //     else
-        //     {
-        //         return false;
-        //     }
-
-        //     pragma(msg, typeof(p));
-        // }
-        // else
-        // {
-        //     writeln("Access path: ", c);
-        // }
-
-        // // todo: use dot-explorer on the JSONValue
-        // return true;
     }
 }
 
