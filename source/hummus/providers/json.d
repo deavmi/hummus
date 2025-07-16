@@ -51,14 +51,18 @@ private string jsonNormal(JSONValue* i)
     }
 }
 
+import std.stdio;
+
 // todo: this belongs in the niknaks library
 private JSONValue* traverseTo(string path, JSONValue* start)
 {
+    // todo: nullity check here on `start`?
     import std.string : split, indexOf;
 
     // no dots `.` in the name
     if(indexOf(path, ".") < 0)
     {
+        writeln("naaier: ", path);
         JSONValue* p = path in *start;
 
         return p;
@@ -67,6 +71,7 @@ private JSONValue* traverseTo(string path, JSONValue* start)
     else
     {
         string[] cmps = split(path, ".");
+        writeln("cmps: ", cmps);
 
         JSONValue* root = cmps[0] in *start;
 
@@ -103,10 +108,16 @@ private version(unittest)
 
 unittest
 {
+    struct Inner
+    {
+        int prop;
+    }
+
     struct Basic
     {
         string name;
         ulong age;
+        Inner x;
     }
 
     auto cfg = Basic();
@@ -115,7 +126,8 @@ unittest
     string json = `
     {
         "name": "Tristan Brice Velloza Kildaire",
-        "age": 25
+        "age": 25,
+
     }
     `;
 
@@ -128,4 +140,5 @@ unittest
 
     assert(cfg.name == "Tristan Brice Velloza Kildaire");
     assert(cfg.age == 25);
+    assert(cfg.x.prop == 2);
 }
