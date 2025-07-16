@@ -65,6 +65,35 @@ public class JSONProvider : Provider
     }
 }
 
+import std.json : JSONValue;
+
+// todo: this belongs in the niknaks library
+private JSONValue* traverseTo(string path, JSONValue* start)
+{
+    import std.string : split, indexOf;
+
+    // no dots `.` in the name
+    if(indexOf(path, ".") < 0)
+    {
+        JSONValue* p = path in *start;
+
+        return p;
+    }
+    // if there are dots present like `x.y`
+    else
+    {
+        string[] cmps = split(path, ".");
+
+        JSONValue* root = cmps[0] in *start;
+
+        // todo: range check?
+        string[] rem = cmps[1..$];
+        import std.string : join;
+
+        return traverseTo(join(rem, "."), root);
+    }
+}
+
 private bool dotExtract(string i, ref string[] o)
 {
     import std.string : split;
