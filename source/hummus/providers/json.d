@@ -122,6 +122,7 @@ unittest
         string name;
         ulong age;
         Inner x;
+        string bad;
     }
 
     auto cfg = Basic();
@@ -134,7 +135,8 @@ unittest
         "age": 25,
         "x": {
             "prop": 2
-        }
+        },
+        "bad": ["", 2]
     }
     `;
 
@@ -149,4 +151,5 @@ unittest
     // it is not present (in the JSON) hence it should
     // never be set in our struct
     assert(cfg.x.k == cfg.x.k.init);
+    assert(cfg.bad.length == 0);
 }
