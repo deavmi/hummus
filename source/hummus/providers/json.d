@@ -127,6 +127,7 @@ unittest
     auto cfg = Basic();
     writeln("Before provisioning: ", cfg);
 
+    // input json
     string json = `
     {
         "name": "Tristan Brice Velloza Kildaire",
@@ -137,9 +138,6 @@ unittest
     }
     `;
 
-
-
-    // todo: state what should be present
     // create a new JSON provider with the
     // input JSON
     fieldsOf(cfg, new JSONProvider(json));
