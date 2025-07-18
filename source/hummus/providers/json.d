@@ -1,10 +1,12 @@
 module hummus.providers.json;
 
 import hummus.provider : Provider;
+import std.json : JSONValue, JSONType;
+import niknaks.json : traverseTo;
 
 public class JSONProvider : Provider
 {
-    import std.json : JSONValue, parseJSON, JSONException, JSONType;
+    import std.json : parseJSON, JSONException;
 
     private JSONValue _j;
 
@@ -41,10 +43,6 @@ public class JSONProvider : Provider
     }
 }
 
-import std.json : JSONValue;
-
-import std.json : JSONType;
-
 private bool jsonNormal(JSONValue* i, ref string o)
 {
     auto t = i.type();
@@ -63,43 +61,6 @@ private bool jsonNormal(JSONValue* i, ref string o)
     {
         o = i.toString();
         return true;
-    }
-}
-
-import std.stdio;
-
-// todo: this belongs in the niknaks library
-private JSONValue* traverseTo(string path, JSONValue* start)
-{
-    if(start is null)
-    {
-        return null;
-    }
-
-    // todo: nullity check here on `start`?
-    import std.string : split, indexOf;
-
-    // no dots `.` in the name
-    if(indexOf(path, ".") < 0)
-    {
-        writeln("naaier: ", path);
-        JSONValue* p = path in *start;
-
-        return p;
-    }
-    // if there are dots present like `x.y`
-    else
-    {
-        string[] cmps = split(path, ".");
-        writeln("cmps: ", cmps);
-
-        JSONValue* root = cmps[0] in *start;
-
-        // todo: range check?
-        string[] rem = cmps[1..$];
-        import std.string : join;
-
-        return traverseTo(join(rem, "."), root);
     }
 }
 
