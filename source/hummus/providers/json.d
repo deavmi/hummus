@@ -27,27 +27,42 @@ public class JSONProvider : Provider
             return false;
         }
 
-        string s = jsonNormal(f_node);
-        writeln("found JSON node toString(): ", s);
-        v = s;
-        return true;
+        string s_out;
+        if(jsonNormal(f_node, s_out))
+        {
+            writeln("found JSON node toString(): ", s_out);
+            v = s_out;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }
 
 import std.json : JSONValue;
 
 import std.json : JSONType;
-private string jsonNormal(JSONValue* i)
+
+private bool jsonNormal(JSONValue* i, ref string o)
 {
-    if(i.type() == JSONType.string)
+    auto t = i.type();
+    if(t == JSONType.string)
     {
-        string s = i.str();
-        return s;
+        o = i.str();
+        return true;
+    }
+    else if(t == JSONType.ARRAY)
+    {
+        writeln("'", i, "' is an array type, these are unsupported");
+        return false;
     }
     // todo: disallow array types and object types
     else
     {
-        return i.toString();
+        o = i.toString();
+        return true;
     }
 }
 
