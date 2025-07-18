@@ -56,6 +56,11 @@ import std.stdio;
 // todo: this belongs in the niknaks library
 private JSONValue* traverseTo(string path, JSONValue* start)
 {
+    if(start is null)
+    {
+        return null;
+    }
+
     // todo: nullity check here on `start`?
     import std.string : split, indexOf;
 
