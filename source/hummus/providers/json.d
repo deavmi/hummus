@@ -4,6 +4,9 @@ import hummus.provider : Provider;
 import std.json : JSONValue, JSONType;
 import niknaks.json : traverseTo;
 
+// todo: remove
+import std.stdio;
+
 public class JSONProvider : Provider
 {
     import std.json : parseJSON, JSONException;
