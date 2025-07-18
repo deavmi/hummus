@@ -116,6 +116,7 @@ unittest
     struct Inner
     {
         int prop;
+        int k;
     }
 
     struct Basic
@@ -132,7 +133,9 @@ unittest
     {
         "name": "Tristan Brice Velloza Kildaire",
         "age": 25,
-
+        "x": {
+            "prop": 2
+        }
     }
     `;
 
@@ -146,4 +149,8 @@ unittest
     assert(cfg.name == "Tristan Brice Velloza Kildaire");
     assert(cfg.age == 25);
     assert(cfg.x.prop == 2);
+
+    // it is not present (in the JSON) hence it should
+    // never be set in our struct
+    assert(cfg.x.k == cfg.x.k.init);
 }
