@@ -88,23 +88,6 @@ private JSONValue* traverseTo(string path, JSONValue* start)
     }
 }
 
-private bool dotExtract(string i, ref string[] o)
-{
-    import std.string : split;
-
-    auto cmps = split(i, ".");
-
-    if(cmps.length == 1)
-    {
-        return false;
-    }
-    else
-    {
-        o = cmps;
-        return true;
-    }
-}
-
 private version(unittest)
 {
     import hummus.cfg : fieldsOf;
