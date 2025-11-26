@@ -43,6 +43,17 @@ public class JSONProvider : Provider
 
     private JSONValue _j;
 
+    /** 
+     * Constructs a new JSON provider
+     * with the given input JSON to
+     * parse
+     *
+     * Params:
+     *   json = the input JSON
+     * Throws:
+     *   JSONException when parsing
+     * fails
+     */
     this(string json)
     {
         // todo: handle exceptions in non-library specific way
