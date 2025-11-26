@@ -80,12 +80,33 @@ A name like `root.a` will be translated to
 a search for an environment variable named
 `ROOT__A`.
 
+Read the [API](https://hummus.dpldocs.info/hummus.providers.env.html).
+
+### `JSONProvider`
+
+A provider which will look for JSON key-value pairs
+based on matching them to the names of the fields in
+the provided struct.
+
+Struct fields which are of a struct-type themselves
+are supported and are filled whenever json such as
+`x.y` is encountered. This means `x` is some field
+in the "outer" struct. Then because we have `x.y`,
+`x` MUST be of a struct type. Then we access the field
+named `y` in this "inner" struct.
+
+Hence a name like `root.a` will be translated to
+an access at `jsonObject["root"].a` (where `jsonObject`
+is the root document).
+
+Read the [API](https://hummus.dpldocs.info/hummus.providers.json.html).
+
 # Development
 
 ## Testing
 
 In order to run the full test suite use the following
-command:
+command (or just `./test.sh`):
 
 ```d
 V=1 I__Z=2 dub test
@@ -97,6 +118,13 @@ is for the `EnvironmentProvider` which searches
 for environment variables, and in particular its
 unittest looks for those two.
 
+### Build configurations
+
+1. `debug`
+	* In this mode the `gogga` logging library is
+	brought in and various flags are set to enable
+	verbose logging that aids debugging
+	
 ## License
 
 Licensed under the LGPL-2.0-only .

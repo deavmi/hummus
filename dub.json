@@ -4,7 +4,7 @@
 	],
 	"copyright": "Copyright © 2025, Tristan Brice Velloza Kildaire",
 	"dependencies": {
-		"niknaks": ">=0.26.2"
+		"niknaks": ">=0.27.0"
 	},
 	"description": "Pluggable configuration engine",
 	"license": "LGPL-2.0-only",
@@ -12,10 +12,10 @@
 	"targetType": "library",
 	"configurations": {
 	  "debug": {
-			"dependencies": {
-			    "gogga": ">=3.2.0"
-		  },
-			"versions": ["DBG_DEBUG_LOGGING", "DBG_VERBOSE_LOGGING"]
+		"dependencies": {
+			"gogga": ">=3.2.0"
+		},
+		"versions": ["DBG_DEBUG_LOGGING", "DBG_VERBOSE_LOGGING"]
 		}
 	}
 }
