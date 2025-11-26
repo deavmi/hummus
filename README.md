@@ -85,7 +85,7 @@ a search for an environment variable named
 ## Testing
 
 In order to run the full test suite use the following
-command:
+command (or just `./test.sh`):
 
 ```d
 V=1 I__Z=2 dub test
