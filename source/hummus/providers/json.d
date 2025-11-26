@@ -62,6 +62,9 @@ public class JSONProvider : Provider
         this._j = parseJSON(json);
     }
 
+    /**
+     * Implementation
+     */
     protected bool provideImpl(string n, ref string v)
     {
         // todo: check return value for nullity
