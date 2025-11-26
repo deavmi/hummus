@@ -12,10 +12,10 @@
 	"targetType": "library",
 	"configurations": {
 	  "debug": {
-			"dependencies": {
-			    "gogga": ">=3.2.0"
-		  },
-			"versions": ["DBG_DEBUG_LOGGING", "DBG_VERBOSE_LOGGING"]
+		"dependencies": {
+			"gogga": ">=3.2.0"
+		},
+		"versions": ["DBG_DEBUG_LOGGING", "DBG_VERBOSE_LOGGING"]
 		}
 	}
 }

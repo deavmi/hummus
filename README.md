@@ -118,6 +118,13 @@ is for the `EnvironmentProvider` which searches
 for environment variables, and in particular its
 unittest looks for those two.
 
+### Build configurations
+
+1. `debug`
+	* In this mode the `gogga` logging library is
+	brought in and various flags are set to enable
+	verbose logging that aids debugging
+	
 ## License
 
 Licensed under the LGPL-2.0-only .

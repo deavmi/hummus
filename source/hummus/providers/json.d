@@ -15,8 +15,10 @@ import hummus.provider : Provider;
 import std.json : JSONValue, JSONType;
 import niknaks.json : traverseTo;
 
-// todo: remove
-import std.stdio;
+version(unittest)
+{
+    import gogga.mixins;
+}
 
 /**
  * A provider which will look for
@@ -63,7 +65,9 @@ public class JSONProvider : Provider
         string s_out;
         if(jsonNormal(f_node, s_out))
         {
-            writeln("found JSON node toString(): ", s_out);
+            version(unittest)
+                DEBUG("found JSON node toString(): ", s_out);
+
             v = s_out;
             return true;
         }
@@ -84,7 +88,9 @@ private bool jsonNormal(JSONValue* i, ref string o)
     }
     else if(t == JSONType.ARRAY)
     {
-        writeln("'", i, "' is an array type, these are unsupported");
+        version(unittest)
+            DEBUG("'", i, "' is an array type, these are unsupported");
+        
         return false;
     }
     // todo: disallow array types and object types
