@@ -1,3 +1,14 @@
+/** 
+ * JSON-based provider
+ *
+ * You should use this when
+ * you want to fill up your
+ * config with values stored
+ * in a string containing
+ * JSON-encoded data
+ *
+ * Authors: Tristan Brice Velloza Kildaire (deavmi)
+ */
 module hummus.providers.json;
 
 import hummus.provider : Provider;
