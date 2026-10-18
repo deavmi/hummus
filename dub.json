@@ -10,12 +10,13 @@
 	"license": "LGPL-2.0-only",
 	"name": "hummus",
 	"targetType": "library",
-	"configurations": {
-	  "debug": {
-		"dependencies": {
-			"gogga": ">=3.2.0"
-		},
-		"versions": ["DBG_DEBUG_LOGGING", "DBG_VERBOSE_LOGGING"]
+	"configurations": [
+		{
+			"name": "debug",
+			"dependencies": {
+				"gogga": ">=3.2.0"
+			},
+			"versions": ["DBG_DEBUG_LOGGING", "DBG_VERBOSE_LOGGING"]
 		}
-	}
+	]
 }
